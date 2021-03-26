@@ -1,5 +1,7 @@
 let repairer = {
   run: function (creep) {
+    let GOHOME = false
+    if(GOHOME) goHome()
     if (creep.memory.isRepairing && creep.store.getUsedCapacity() == 0) {
       creep.memory.isRepairing = false;
       creep.say("Harvest");
@@ -12,22 +14,29 @@ let repairer = {
     if (creep.memory.isRepairing) {
       let allStructures = creep.room.find(FIND_STRUCTURES);
       let structuresToRepair = allStructures.filter((s) => {
-        return s.hits < s.hitsMax && s.structureType !== "constructedWall";
-      });
 
+        if(s.structureType === "constructedWall" || s.structureType === "rampart"){
+          return s.hits < 10000
+        }
+        else return s.hits < s.hitsMax;
+      });
+      
       if (structuresToRepair.length) {
-        if (creep.repair(structuresToRepair[0]) == ERR_NOT_IN_RANGE) {
+        let repair = creep.repair(structuresToRepair[0])
+
+        if (repair == ERR_NOT_IN_RANGE) {
           creep.moveTo(structuresToRepair[0]);
         }
       }
       else{
+        
         // Move out of the way
-        creep.moveTo(Game.flags["Flag1"]);
+        goHome()
       }
     } else {
       let source;
       if (!creep.memory.isLongRange) {
-        source = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+        source = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
       } else {
         let allSources = creep.room.find(FIND_SOURCES_ACTIVE);
         let furthestDistance = 0;
@@ -45,7 +54,12 @@ let repairer = {
         creep.moveTo(source);
       }
     }
-  },
+    function goHome(){
+      creep.moveTo(Game.flags["Flag1"]);
+    }
+  }
+
+
 };
 
 function repairerTemplate() {

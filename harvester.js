@@ -12,9 +12,9 @@ let harvester = {
     else goHarvestEnergy();
 
     function goHarvestEnergy() {
-      let closestSource = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
+      let closestSource = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
       let harvest = creep.harvest(closestSource)
-      console.log("harvester harvest",harvest)
+
       if (harvest == ERR_NOT_IN_RANGE) creep.moveTo(closestSource);
     }
 
@@ -31,7 +31,7 @@ let harvester = {
       );
 
       let transfer = creep.transfer(allDestinations[0], RESOURCE_ENERGY);
-        console.log("harvester transfer",transfer)
+
       if (transfer == ERR_NOT_IN_RANGE) {
         creep.moveTo(allDestinations[0]);
       }
@@ -41,10 +41,17 @@ let harvester = {
 
 function harvesterTemplate() {
   return {
-    parts: [WORK, WORK, CARRY, CARRY, MOVE],
+    parts: [WORK, WORK,WORK, CARRY, CARRY, MOVE],
     name: "Harvester" + Game.time,
     memory: { memory: { role: "harvester", isHarvesting: false } },
   };
 }
+function emergencyHarvesterTemplate() {
+  return {
+    parts: [WORK, CARRY, MOVE],
+    name: "EmergencyHarvester" + Game.time,
+    memory: { memory: { role: "harvester", isHarvesting: false } },
+  };
+}
 
-module.exports = { harvester, harvesterTemplate };
+module.exports = { harvester, harvesterTemplate,emergencyHarvesterTemplate };

@@ -12,18 +12,36 @@ let upgrader = {
     else goHarvestEnergy();
 
     function goHarvestEnergy() {
-      let closestSource = creep.pos.findClosestByPath(FIND_SOURCES_ACTIVE);
-      let harvest = creep.harvest(closestSource)
-      console.log("upgrader harvest",harvest)
-      if (harvest == ERR_NOT_IN_RANGE) creep.moveTo(closestSource);
+      let closestSource = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
+
+      let harvest = creep.harvest(closestSource);
+
+      if (harvest == ERR_NOT_IN_RANGE)
+        creep.moveTo(closestSource, {
+          visualizePathStyle: {
+            fill: "transparent",
+            stroke: "#fff",
+            lineStyle: "dashed",
+            strokeWidth: 0.15,
+            opacity: 0.1,
+          },
+        });
     }
 
     function goGiveEnergyToController() {
       let roomController = creep.room.controller;
-      let upgrade = creep.upgradeController(roomController)
-      console.log("upgrader upgrade",upgrade)
+      let upgrade = creep.upgradeController(roomController);
+
       if (upgrade == ERR_NOT_IN_RANGE) {
-        creep.moveTo(roomController);
+        creep.moveTo(roomController, {
+          visualizePathStyle: {
+            fill: "transparent",
+            stroke: "#fff",
+            lineStyle: "dashed",
+            strokeWidth: 0.15,
+            opacity: 0.1,
+          },
+        });
       }
     }
   },
@@ -31,7 +49,7 @@ let upgrader = {
 
 function upgraderTemplate() {
   return {
-    parts: [WORK, WORK,WORK,CARRY, CARRY, CARRY, MOVE],
+    parts: [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE],
     name: "Upgrader" + Game.time,
     memory: { memory: { role: "upgrader", isUpgrading: false, isLongDistance: true } },
   };

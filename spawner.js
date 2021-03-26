@@ -1,6 +1,6 @@
-var { builderTemplate, longRangeBuilderTemplate } = require("builder");
+var { builderTemplate } = require("builder");
 var { upgraderTemplate } = require("upgrader");
-var { harvesterTemplate } = require("harvester");
+var { harvesterTemplate,emergencyHarvesterTemplate } = require("harvester");
 var { repairerTemplate } = require("repairer");
 
 let spawner = {
@@ -23,10 +23,14 @@ let spawner = {
       else if (creep.memory.role == "repairer") repairerInRoom++;
     }
 
-    if (harvestersInRoom < 1) produceCreep(harvesterTemplate());
+    if (harvestersInRoom < 1) {
+        if(produceCreep(harvesterTemplate()) == ERR_NOT_ENOUGH_ENERGY){
+            produceCreep(emergencyHarvesterTemplate())
+        }
+    };
     if (buildersInRoom < 1 && constructionSites.length > 0) produceCreep(builderTemplate());
     if (repairerInRoom < 1 && structuresToRepair.length > 0) produceCreep(repairerTemplate());
-    if (upgradersInRoom < 3) produceCreep(upgraderTemplate());
+    if (upgradersInRoom < 2) produceCreep(upgraderTemplate());
 
     function produceCreep(template) {
       spawn.spawnCreep(template.parts, template.name, template.memory);
