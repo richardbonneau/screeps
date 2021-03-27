@@ -3,6 +3,7 @@ var { upgrader } = require("upgrader");
 var { builder } = require("builder");
 var { repairer } = require("repairer");
 var spawner = require("spawner");
+var tower = require("tower");
 
 module.exports.loop = function () {
   for (let name in Game.creeps) {
@@ -15,4 +16,14 @@ module.exports.loop = function () {
 
   var spawn = Game.spawns["Spawn1"];
   spawner.run(spawn);
+
+  
+  let room;
+  for(let name in Game.rooms){
+    room = Game.rooms[name]
+  }
+  let allStructures = room.find(FIND_STRUCTURES);
+  let theTower = allStructures.filter(s=>s.structureType === "tower")[0]
+  tower.run(theTower);
+
 };

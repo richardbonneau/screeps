@@ -12,7 +12,6 @@ let spawner = {
     let buildersInRoom = 0;
     let upgradersInRoom = 0;
     let harvestersInRoom = 0;
-    let repairerInRoom = 0;
 
     for (name in Game.creeps) {
       let creep = Game.creeps[name];
@@ -20,17 +19,15 @@ let spawner = {
         harvestersInRoom++;
       } else if (creep.memory.role == "builder") buildersInRoom++;
       else if (creep.memory.role == "upgrader") upgradersInRoom++;
-      else if (creep.memory.role == "repairer") repairerInRoom++;
     }
 
     if (harvestersInRoom < 1) {
         if(produceCreep(harvesterTemplate()) == ERR_NOT_ENOUGH_ENERGY){
             produceCreep(emergencyHarvesterTemplate())
         }
-    };
-    if (buildersInRoom < 1 && constructionSites.length > 0) produceCreep(builderTemplate());
-    if (repairerInRoom < 1 && structuresToRepair.length > 0) produceCreep(repairerTemplate());
-    if (upgradersInRoom < 2) produceCreep(upgraderTemplate());
+    }
+    else if (buildersInRoom < 1 && constructionSites.length > 0) produceCreep(builderTemplate());
+    else if (upgradersInRoom < 1) produceCreep(upgraderTemplate());
 
     function produceCreep(template) {
       spawn.spawnCreep(template.parts, template.name, template.memory);

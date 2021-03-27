@@ -26,9 +26,9 @@ let builder = {
     } else {
       let source;
       if (!creep.memory.isLongRange) {
-        source = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
+        source = creep.pos.findClosestByRange(FIND_SOURCES);
       } else {
-        let allSources = creep.room.find(FIND_SOURCES_ACTIVE);
+        let allSources = creep.room.find(FIND_SOURCES);
         let furthestDistance = 0;
 
         allSources.forEach((s) => {
@@ -49,7 +49,7 @@ let builder = {
 
 function builderTemplate() {
   return {
-    parts: [WORK, WORK, WORK, CARRY, CARRY, MOVE],
+    parts: [WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE],
     name: "Builder" + Game.time,
     memory: { memory: { role: "builder", isBuilding: false, isLongRange: false } },
   };

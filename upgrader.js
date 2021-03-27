@@ -12,7 +12,7 @@ let upgrader = {
     else goHarvestEnergy();
 
     function goHarvestEnergy() {
-      let closestSource = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
+      let closestSource = creep.pos.findClosestByRange(FIND_SOURCES);
 
       let harvest = creep.harvest(closestSource);
 
@@ -49,7 +49,7 @@ let upgrader = {
 
 function upgraderTemplate() {
   return {
-    parts: [WORK, WORK, WORK, CARRY, CARRY, CARRY, MOVE],
+    parts: [WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE],
     name: "Upgrader" + Game.time,
     memory: { memory: { role: "upgrader", isUpgrading: false, isLongDistance: true } },
   };

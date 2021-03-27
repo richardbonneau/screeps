@@ -16,7 +16,7 @@ let repairer = {
       let structuresToRepair = allStructures.filter((s) => {
 
         if(s.structureType === "constructedWall" || s.structureType === "rampart"){
-          return s.hits < 10000
+          return s.hits < 5000
         }
         else return s.hits < s.hitsMax;
       });
@@ -36,9 +36,9 @@ let repairer = {
     } else {
       let source;
       if (!creep.memory.isLongRange) {
-        source = creep.pos.findClosestByRange(FIND_SOURCES_ACTIVE);
+        source = creep.pos.findClosestByRange(FIND_SOURCES);
       } else {
-        let allSources = creep.room.find(FIND_SOURCES_ACTIVE);
+        let allSources = creep.room.find(FIND_SOURCES);
         let furthestDistance = 0;
 
         allSources.forEach((s) => {
