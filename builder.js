@@ -1,7 +1,5 @@
 let builder = {
   run: function (creep) {
-    let listPriorities = ["605e2b25697f84e1b36f5eee", "605e2b225ead6e3a64b94018"];
-
     if (creep.memory.isBuilding && creep.store.getUsedCapacity() == 0) {
       creep.memory.isBuilding = false;
       creep.say("Harvest");
@@ -12,15 +10,18 @@ let builder = {
     }
 
     if (creep.memory.isBuilding) {
-
       var targets = creep.room.find(FIND_CONSTRUCTION_SITES);
-      // listPriorities = listPriorities.filter(site=>Game.getById(site).)
-      // if(listPriorities.length > 0){
-      //   targets = listPriorities
-      // }
       if (targets.length) {
         if (creep.build(targets[0]) == ERR_NOT_IN_RANGE) {
-          creep.moveTo(targets[0]);
+          creep.moveTo(targets[0], {
+            visualizePathStyle: {
+              fill: "transparent",
+              stroke: "#fff",
+              lineStyle: "dashed",
+              strokeWidth: 0.15,
+              opacity: 0.1,
+            },
+          });
         }
       }
     } else {
@@ -41,7 +42,15 @@ let builder = {
       }
 
       if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
-        creep.moveTo(source);
+        creep.moveTo(source, {
+          visualizePathStyle: {
+            fill: "transparent",
+            stroke: "#fff",
+            lineStyle: "dashed",
+            strokeWidth: 0.15,
+            opacity: 0.1,
+          },
+        });
       }
     }
   },
@@ -49,7 +58,7 @@ let builder = {
 
 function builderTemplate() {
   return {
-    parts: [WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE],
+    parts: [WORK, WORK, WORK, WORK, CARRY, CARRY, CARRY, CARRY, MOVE, MOVE],
     name: "Builder" + Game.time,
     memory: { memory: { role: "builder", isBuilding: false, isLongRange: false } },
   };

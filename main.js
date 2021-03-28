@@ -6,6 +6,23 @@ var spawner = require("spawner");
 var tower = require("tower");
 
 module.exports.loop = function () {
+  // Buildings
+  for (let name in Game.rooms) {
+    let room = Game.rooms[name];
+
+    let allStructures = room.find(FIND_STRUCTURES);
+    let allTowers = allStructures.filter((s) => s.structureType === "tower");
+    allTowers.forEach((t) => {
+      tower.run(t);
+    });
+
+    let allSpawns = allStructures.filter((s) => s.structureType === "spawn");
+    allSpawns.forEach((s) => {
+      spawner.run(s);
+    });
+  }
+
+  //Creeps
   for (let name in Game.creeps) {
     let creep = Game.creeps[name];
     if (creep.memory.role == "harvester") harvester.run(creep);
@@ -13,17 +30,5 @@ module.exports.loop = function () {
     else if (creep.memory.role == "builder") builder.run(creep);
     else if (creep.memory.role == "repairer") repairer.run(creep);
   }
-
-  var spawn = Game.spawns["Spawn1"];
-  spawner.run(spawn);
-
-  
-  let room;
-  for(let name in Game.rooms){
-    room = Game.rooms[name]
-  }
-  let allStructures = room.find(FIND_STRUCTURES);
-  let theTower = allStructures.filter(s=>s.structureType === "tower")[0]
-  tower.run(theTower);
 
 };

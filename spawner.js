@@ -27,7 +27,7 @@ let spawner = {
         }
     }
     else if (buildersInRoom < 1 && constructionSites.length > 0) produceCreep(builderTemplate());
-    else if (upgradersInRoom < 1) produceCreep(upgraderTemplate());
+    else if (upgradersInRoom < 3) produceCreep(upgraderTemplate());
 
     function produceCreep(template) {
       spawn.spawnCreep(template.parts, template.name, template.memory);

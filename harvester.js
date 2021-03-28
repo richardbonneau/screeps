@@ -11,14 +11,21 @@ let harvester = {
     }
 
     if (creep.memory.isTransfering) goGiveEnergyToSpawn();
-    // if (creep.memory.isTransfering) goGiveEnergyToTower()
     else goHarvestEnergy();
 
     function goHarvestEnergy() {
       let closestSource = creep.pos.findClosestByRange(FIND_SOURCES);
       let harvest = creep.harvest(closestSource)
 
-      if (harvest == ERR_NOT_IN_RANGE) creep.moveTo(closestSource);
+      if (harvest == ERR_NOT_IN_RANGE) creep.moveTo(closestSource, {
+        visualizePathStyle: {
+          fill: "transparent",
+          stroke: "#fff",
+          lineStyle: "dashed",
+          strokeWidth: 0.15,
+          opacity: 0.1,
+        },
+      });
     }
 
     function goGiveEnergyToSpawn() {
@@ -34,7 +41,15 @@ let harvester = {
       let transfer = creep.transfer(allDestinations[0], RESOURCE_ENERGY);
       
       if (transfer == ERR_NOT_IN_RANGE) {
-        creep.moveTo(allDestinations[0]);
+        creep.moveTo(allDestinations[0], {
+          visualizePathStyle: {
+            fill: "transparent",
+            stroke: "#fff",
+            lineStyle: "dashed",
+            strokeWidth: 0.15,
+            opacity: 0.1,
+          },
+        });
         
       } else if (transfer == ERR_INVALID_TARGET || transfer == ERR_FULL ){
         goGiveEnergyToTower()
@@ -44,9 +59,16 @@ let harvester = {
     function goGiveEnergyToTower(){
       let allTowers = allStructures.filter(s=>s.structureType === "tower")
       let transfer = creep.transfer(allTowers[0], RESOURCE_ENERGY);
-      console.log("transfer to tower",transfer)
       if (transfer == ERR_NOT_IN_RANGE) {
-        creep.moveTo(allTowers[0]);
+        creep.moveTo(allTowers[0], {
+          visualizePathStyle: {
+            fill: "transparent",
+            stroke: "#fff",
+            lineStyle: "dashed",
+            strokeWidth: 0.15,
+            opacity: 0.1,
+          },
+        });
       }
     }
   },

@@ -1,4 +1,5 @@
 let repairer = {
+  // Use the tower instead of this when it's available
   run: function (creep) {
     let GOHOME = false
     if(GOHOME) goHome()
@@ -16,7 +17,7 @@ let repairer = {
       let structuresToRepair = allStructures.filter((s) => {
 
         if(s.structureType === "constructedWall" || s.structureType === "rampart"){
-          return s.hits < 5000
+          return s.hits < 10000
         }
         else return s.hits < s.hitsMax;
       });
@@ -25,7 +26,15 @@ let repairer = {
         let repair = creep.repair(structuresToRepair[0])
 
         if (repair == ERR_NOT_IN_RANGE) {
-          creep.moveTo(structuresToRepair[0]);
+          creep.moveTo(structuresToRepair[0], {
+            visualizePathStyle: {
+              fill: "transparent",
+              stroke: "#fff",
+              lineStyle: "dashed",
+              strokeWidth: 0.15,
+              opacity: 0.1,
+            },
+          });
         }
       }
       else{
@@ -51,11 +60,27 @@ let repairer = {
       }
 
       if (creep.harvest(source) == ERR_NOT_IN_RANGE) {
-        creep.moveTo(source);
+        creep.moveTo(source, {
+          visualizePathStyle: {
+            fill: "transparent",
+            stroke: "#fff",
+            lineStyle: "dashed",
+            strokeWidth: 0.15,
+            opacity: 0.1,
+          },
+        });
       }
     }
     function goHome(){
-      creep.moveTo(Game.flags["Flag1"]);
+      creep.moveTo(Game.flags["Flag1"], {
+        visualizePathStyle: {
+          fill: "transparent",
+          stroke: "#fff",
+          lineStyle: "dashed",
+          strokeWidth: 0.15,
+          opacity: 0.1,
+        },
+      });
     }
   }
 
