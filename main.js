@@ -4,6 +4,22 @@ var liveCode = require("liveCode");
 const { worker } = require("worker");
 
 module.exports.loop = function () {
+  
+
+
+  
+  let mainSource = Game.getObjectById("5bbcac5d9099fc012e635567");
+
+  if(mainSource.ticksToRegeneration === 1 ){
+    console.log(`Energy remaining: ${mainSource.energy} at game time: ${Game.time}`)
+    Game.notify(`Energy remaining: ${mainSource.energy} at game time: ${Game.time}`);
+  }
+  if(mainSource.energy === 0){
+    console.log(`Source depleted with ${mainSource.ticksToRegeneration} remaining`)
+    Game.notify(`Source depleted with ${mainSource.ticksToRegeneration} remaining`);
+  }
+
+
   // Buildings
   for (let name in Game.rooms) {
     let room = Game.rooms[name];

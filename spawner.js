@@ -12,7 +12,7 @@ let spawner = {
       } 
     }
 
-    if (workersInRoom < 4) {
+    if (workersInRoom < 3) {
       produceCreep(workerTemplate())
     }
 

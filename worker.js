@@ -35,7 +35,7 @@ let worker = {
             let closestSource = creep.pos.findClosestByRange(FIND_SOURCES);
             let harvest = creep.harvest(closestSource);
 
-            if (harvest == ERR_NOT_IN_RANGE)
+            if (harvest == ERR_NOT_IN_RANGE || harvest == ERR_NOT_ENOUGH_RESOURCES)
                 creep.moveTo(closestSource, {
                     visualizePathStyle: {
                         fill: "transparent",
@@ -45,6 +45,7 @@ let worker = {
                         opacity: 0.1,
                     },
                 });
+
         }
 
         function goGiveEnergyToSpawn() {
@@ -152,6 +153,7 @@ function workerTemplate() {
             WORK,
             WORK,
             WORK,
+            WORK,
             CARRY,
             CARRY,
             CARRY,
@@ -162,6 +164,8 @@ function workerTemplate() {
             MOVE,
             MOVE,
             MOVE,
+            MOVE,
+            MOVE
         ],
         name: "Worker" + Game.time,
         memory: { memory: { role: "worker", isHarvesting: false, currentTask: "" } },
