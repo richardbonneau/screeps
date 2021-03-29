@@ -4,6 +4,8 @@ var { builder } = require("builder");
 var { repairer } = require("repairer");
 var spawner = require("spawner");
 var tower = require("tower");
+var liveCode = require("liveCode");
+const { worker } = require("worker");
 
 module.exports.loop = function () {
   // Buildings
@@ -29,6 +31,10 @@ module.exports.loop = function () {
     else if (creep.memory.role == "upgrader") upgrader.run(creep);
     else if (creep.memory.role == "builder") builder.run(creep);
     else if (creep.memory.role == "repairer") repairer.run(creep);
+    else if (creep.memory.role == "worker") worker.run(creep)
   }
+  
+  
+  liveCode.run()
 
 };

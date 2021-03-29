@@ -76,7 +76,7 @@ let harvester = {
 
 function harvesterTemplate() {
   return {
-    parts: [WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE],
+    parts: [WORK,WORK,WORK,WORK,WORK,WORK,CARRY,CARRY,CARRY,CARRY,CARRY,CARRY,MOVE,MOVE],
     name: "Harvester" + Game.time,
     memory: { memory: { role: "harvester", isHarvesting: false } },
   };
