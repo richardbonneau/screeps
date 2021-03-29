@@ -68,6 +68,7 @@ let worker = {
                     },
                 });
             } else if (transfer == ERR_INVALID_TARGET || transfer == ERR_FULL) {
+                creep.memory.currentTask = ""
                 return null;
             }
         }
@@ -88,6 +89,7 @@ let worker = {
                     },
                 });
             } else if (transfer == ERR_INVALID_TARGET || transfer == ERR_FULL) {
+                creep.memory.currentTask = ""
                 return null;
             }
         }
@@ -108,7 +110,10 @@ let worker = {
                         },
                     });
                 }
-            } else return null;
+            } else {
+                creep.memory.currentTask = ""
+                return null;
+            }
         }
 
         function goGiveEnergyToController() {

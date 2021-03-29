@@ -1,4 +1,3 @@
-var { harvester } = require("harvester");
 var spawner = require("spawner");
 var tower = require("tower");
 var liveCode = require("liveCode");
@@ -24,8 +23,7 @@ module.exports.loop = function () {
   //Creeps
   for (let name in Game.creeps) {
     let creep = Game.creeps[name];
-    if (creep.memory.role == "harvester") harvester.run(creep);
-    else if (creep.memory.role == "worker") worker.run(creep)
+    if (creep.memory.role == "worker") worker.run(creep)
   }
   
   
