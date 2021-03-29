@@ -8,8 +8,13 @@ let liveCode = {
     //Move to tower
     // Game.getObjectById("606123f8bad8864efea2fbce").moveTo(Game.getObjectById("605eaafd39c8c334fc9c256f"))
 
-    
-}
-}
+    // clear memory of dead creeps
+    // for (var i in Memory.creeps) {
+    //   if (!Game.creeps[i]) {
+    //     delete Memory.creeps[i];
+    //   }
+    // }
+  },
+};
 
-module.exports = liveCode
+module.exports = liveCode;

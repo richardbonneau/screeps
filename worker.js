@@ -9,7 +9,6 @@ let worker = {
             creep.memory.isHarvesting = false;
             creep.say("Transfer");
         }
-
         if (creep.memory.isHarvesting) goHarvestEnergy();
         else {
             if (goGiveEnergyToSpawn() == null) {
@@ -24,6 +23,11 @@ let worker = {
         function isBusy(task){
             if(creep.memory.currentTask === task || creep.memory.currentTask === "") return false
             else return true
+        }
+
+        function takeAnotherTask(){
+            creep.memory.currentTask = ""
+            return null
         }
 
         function goHarvestEnergy() {
@@ -68,8 +72,7 @@ let worker = {
                     },
                 });
             } else if (transfer == ERR_INVALID_TARGET || transfer == ERR_FULL) {
-                creep.memory.currentTask = ""
-                return null;
+                return takeAnotherTask();
             }
         }
 
@@ -77,6 +80,11 @@ let worker = {
             if(isBusy("tower")) return null
             creep.memory.currentTask = "tower";
             let allTowers = allStructures.filter((s) => s.structureType === "tower");
+
+            let towerEnergyNeeds = allTowers[0].store.getCapacity(RESOURCE_ENERGY) - allTowers[0].store[RESOURCE_ENERGY]
+            if(towerEnergyNeeds < 600){
+                return takeAnotherTask()
+            }
             let transfer = creep.transfer(allTowers[0], RESOURCE_ENERGY);
             if (transfer == ERR_NOT_IN_RANGE) {
                 creep.moveTo(allTowers[0], {
@@ -89,8 +97,7 @@ let worker = {
                     },
                 });
             } else if (transfer == ERR_INVALID_TARGET || transfer == ERR_FULL) {
-                creep.memory.currentTask = ""
-                return null;
+                return takeAnotherTask();
             }
         }
 
@@ -111,8 +118,7 @@ let worker = {
                     });
                 }
             } else {
-                creep.memory.currentTask = ""
-                return null;
+                return takeAnotherTask();
             }
         }
 
