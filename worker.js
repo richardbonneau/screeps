@@ -12,7 +12,7 @@ let worker = {
         if (creep.memory.isHarvesting) goHarvestEnergy();
         else {
             if (goGiveEnergyToSpawn() == null) {
-                if (goGiveEnergyToTower() == null) {
+                if (goGiveEnergyToTowers() == null) {
                     if (goConstructBuildings() == null) {
                         goGiveEnergyToController();
                     }
@@ -35,7 +35,10 @@ let worker = {
             let closestSource = creep.pos.findClosestByRange(FIND_SOURCES);
             let harvest = creep.harvest(closestSource);
 
-            if (harvest == ERR_NOT_IN_RANGE || harvest == ERR_NOT_ENOUGH_RESOURCES)
+            if(harvest == ERR_NOT_ENOUGH_RESOURCES && creep.store.getUsedCapacity() > 0){
+                creep.memory.isHarvesting = false;
+            }
+            else if (harvest == ERR_NOT_IN_RANGE || harvest == ERR_NOT_ENOUGH_RESOURCES)
                 creep.moveTo(closestSource, {
                     visualizePathStyle: {
                         fill: "transparent",
@@ -77,18 +80,26 @@ let worker = {
             }
         }
 
-        function goGiveEnergyToTower() {
+        function goGiveEnergyToTowers() {
             if(isBusy("tower")) return null
-            creep.memory.currentTask = "tower";
             let allTowers = allStructures.filter((s) => s.structureType === "tower");
 
-            let towerEnergyNeeds = allTowers[0].store.getCapacity(RESOURCE_ENERGY) - allTowers[0].store[RESOURCE_ENERGY]
-            if(towerEnergyNeeds < 600){
+            
+            let towersInNeedOfEnergy = allTowers.filter(t=>{
+                let towerEnergyNeeds = t.store.getCapacity(RESOURCE_ENERGY) - t.store[RESOURCE_ENERGY]
+                console.log("towerEnergyNeeds",towerEnergyNeeds)
+                return towerEnergyNeeds > 600
+            })
+            console.log("towersInNeedOfEnergy.length === 0 ",towersInNeedOfEnergy.length === 0, "creep.memory.currentTask !== tower",creep.memory.currentTask !== "tower")
+            if(towersInNeedOfEnergy.length === 0 && creep.memory.currentTask !== "tower"){
                 return takeAnotherTask()
             }
-            let transfer = creep.transfer(allTowers[0], RESOURCE_ENERGY);
+      
+            creep.memory.currentTask = "tower";
+            
+            let transfer = creep.transfer(towersInNeedOfEnergy[0], RESOURCE_ENERGY);
             if (transfer == ERR_NOT_IN_RANGE) {
-                creep.moveTo(allTowers[0], {
+                creep.moveTo(towersInNeedOfEnergy[0], {
                     visualizePathStyle: {
                         fill: "transparent",
                         stroke: "#fff",

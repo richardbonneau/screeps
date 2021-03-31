@@ -2,23 +2,11 @@ var spawner = require("spawner");
 var tower = require("tower");
 var liveCode = require("liveCode");
 const { worker } = require("worker");
+const { attacker } = require("attacker");
+const { colonizer } = require("colonizer");
 
 module.exports.loop = function () {
-  
-
-
-  
   let mainSource = Game.getObjectById("5bbcac5d9099fc012e635567");
-
-  if(mainSource.ticksToRegeneration === 1 ){
-    console.log(`Energy remaining: ${mainSource.energy} at game time: ${Game.time}`)
-    Game.notify(`Energy remaining: ${mainSource.energy} at game time: ${Game.time}`);
-  }
-  if(mainSource.energy === 0){
-    console.log(`Source depleted with ${mainSource.ticksToRegeneration} remaining`)
-    Game.notify(`Source depleted with ${mainSource.ticksToRegeneration} remaining`);
-  }
-
 
   // Buildings
   for (let name in Game.rooms) {
@@ -39,10 +27,10 @@ module.exports.loop = function () {
   //Creeps
   for (let name in Game.creeps) {
     let creep = Game.creeps[name];
-    if (creep.memory.role == "worker") worker.run(creep)
+    if (creep.memory.role == "worker") worker.run(creep);
+    else if (creep.memory.role == "attacker") attacker.run(creep);
+    else if (creep.memory.role == "colonizer") colonizer.run(creep);
   }
-  
-  
-  liveCode.run()
 
+  liveCode.run();
 };

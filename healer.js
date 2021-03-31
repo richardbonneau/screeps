@@ -90,7 +90,7 @@ let healer = {
   function repairerTemplate() {
     return {
       parts: [WORK, WORK, CARRY, MOVE],
-      name: "Repairer" + Game.time,
+      name: "Wololo" + Game.time,
       memory: { memory: { role: "repairer", isRepairing: false } },
     };
   }
