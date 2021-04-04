@@ -1,11 +1,11 @@
 let colonizer = {
   // Use the tower instead of this when it's available
   run: function (creep) {
-    console.log("creep.memory.order", creep.memory.order);
+    // console.log("creep.memory.order", creep.memory.order);
 
     // Move to flag room
     let flagDest = Game.flags["WarFlag"];
-    console.log("flagDest", flagDest);
+    // console.log("flagDest", flagDest);
 
     if (flagDest.room !== creep.room) {
       let moveToFlag = creep.moveTo(flagDest, {
@@ -17,6 +17,7 @@ let colonizer = {
           opacity: 0.1,
         },
       });
+      console.log("moveToFlag",moveToFlag)
       return;
     }
 
@@ -24,14 +25,23 @@ let colonizer = {
     let allStructures = creep.room.find(FIND_STRUCTURES);
     let controller = allStructures.filter((struct) => struct.structureType === "controller")[0];
 
-    switch (creep.memory.order) {
-      case "colonize":
-        console.log("going home");
-      case "reserve":
-        reserve(controller);
-      case "attack":
-        attackController(controller);
-    }
+    // switch (creep.memory.order) {
+    //   case "colonize":
+    //   // console.log("going home");
+    //   case "reserve":
+    //     reserve(controller);
+    //   case "attack":
+    //     attackController(controller);
+    // }
+
+
+    
+
+if(claim(controller)!==OK){
+  if(reserve(controller) !==OK){
+  }
+}
+
 
     function reserve(target) {
       let reserveController = creep.reserveController(target);
@@ -46,10 +56,11 @@ let colonizer = {
           },
         });
       }
+      return reserveController
     }
 
     function claim(target) {
-      let claimController = creep.claim(target);
+      let claimController = creep.claimController(target);
       if (claimController === ERR_NOT_IN_RANGE) {
         creep.moveTo(target, {
           visualizePathStyle: {
@@ -61,11 +72,12 @@ let colonizer = {
           },
         });
       }
+      return claimController
     }
 
     function attackController(target) {
       let attackController = creep.attackController(target);
-      console.log("attackController", attackController);
+      // console.log("attackController", attackController);
       if (attackController === ERR_NOT_IN_RANGE) {
         creep.moveTo(target, {
           visualizePathStyle: {
@@ -83,9 +95,10 @@ let colonizer = {
 
 function colonizerTemplate() {
   return {
-    parts: [CLAIM, CLAIM, MOVE, MOVE],
+    qualityFirst: true,
+    parts: [CLAIM, MOVE],
     name: "Colonizer" + Game.time,
-    memory: { memory: { role: "colonizer", order: "reserve", targetId: "" } },
+    memory: { memory: { role: "colonizer", order: "attack", targetId: "" } },
   };
 }
 
